@@ -1,0 +1,41 @@
+---
+format: 
+  typst:
+    keep-typ: true
+execute: 
+  keep-md: true
+---
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+library(dplyr)
+library(typstable)
+library(knitr)
+library(typstable)
+
+```
+
+## Table
+
+```{r}
+#| echo: false
+#| results: 'asis'
+
+
+BOD %>%
+  tt() %>%  
+  table_note("This is a \\ note")
+
+# breakable(TRUE)
+iris %>%
+  tt()
+
+
+```
+
+Some more text.
+
+

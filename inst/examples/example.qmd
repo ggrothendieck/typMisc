@@ -1,0 +1,44 @@
+---
+format: 
+  typst:
+    keep-typ: true
+execute: 
+  keep-md: true
+---
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+library(dplyr)
+library(huxtable)
+library(knitr)
+library(typMisc)
+
+options(huxtable.print = print_typst)
+
+```
+
+## Table
+
+```{r}
+#| echo: false
+#| results: 'asis'
+
+
+BOD %>%
+  as_hux() %>%  
+  set_all_borders(1) %>%
+  table_note("This is a \\ note")
+
+breakable(TRUE)
+iris %>%
+  as_hux() %>%
+  set_all_borders(1)
+
+```
+
+Some more text.
+
+

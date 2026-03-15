@@ -1,0 +1,3 @@
+# Rbuildignore for typMisc
+^\.Rbuildignore$
+^\.build.R$

@@ -1,0 +1,16 @@
+# History files
+.Rhistory
+.RData
+.Ruserdata
+
+# Example / Typst temporary files
+*.pdf
+*.log
+*.aux
+*_files/
+*.typ
+*.out
+
+# Package build artifacts
+/*.tar.gz
+/*.Rcheck/
