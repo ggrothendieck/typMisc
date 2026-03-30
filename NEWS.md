@@ -1,6 +1,12 @@
+# typMisc 0.2.0
+
+* added feat_* functions
+
+* now depends on R 4.4.0 or greater
+
 # typMisc 0.1.0
 
-* Initial release of `typMisc`.
+* Initial github release of `typMisc`.
 
 ## Features
 

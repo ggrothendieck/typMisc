@@ -1,5 +1,5 @@
 library(readme2vignette)
-add_readme_to_vignette(".", vighnette_slug = "typMisc")
+add_readme_to_vignette(".", vignette_slug = "typMisc")
 
 library(devtools)
 document()

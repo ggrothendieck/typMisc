@@ -2,7 +2,7 @@
 title: ""
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{typeMisc}
+  %\VignetteIndexEntry{README}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

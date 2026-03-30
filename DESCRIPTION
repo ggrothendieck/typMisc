@@ -1,20 +1,17 @@
 Package: typMisc
 Title: Miscellaneous R functions for typst.
-Version: 0.1.0
+Version: 0.2.0
 URL: https://freierson.github.io/typstable/, https://github.com/freierson/typstable
 BugReports: ggrothendieck@gmail.com
 Authors@R:
     person("G.", "Grothendieck", email = "ggrothendieck@gmail.com", 
     role = c("aut", "cre"))
-Description: A small collection of helper functions and S3 methods designed to
-  streamline the generation of Typst code within Quarto documents. Includes
-  tools for handling raw Typst blocks, managing table notes, and controlling
-  document layout properties like figure breakability.
-Depends: R (>= 4.1.0)
+Description: A small collection of helper functions for use with typstable
+Depends: R (>= 4.4.0)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
 VignetteBuilder: knitr
 License: MIT 
-Date: 2026-03-15
+Date: 2026-03-30
 Suggests: knitr, rmarkdown
