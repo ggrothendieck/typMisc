@@ -7,7 +7,10 @@
 feat_align_cells(align = c("left", "center", "right"))
 }
 \arguments{
-\item{align.}{Can be "left", "center" or "right".}
+\item{align}{Character. One of "left", "center", or "right".}
+}
+\value{
+A feat object.
 }
 \description{
 Align all cells in table

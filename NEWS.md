@@ -1,6 +1,14 @@
+# typMisc 0.3.0
+
+* added tt_env
+
+* added feat class and methods
+
+* added encircle function
+
 # typMisc 0.2.0
 
-* added feat_* functions
+* added feat_*
 
 * now depends on R 4.4.0 or greater
 

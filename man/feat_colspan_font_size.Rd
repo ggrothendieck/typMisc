@@ -2,18 +2,18 @@
 % Please edit documentation in R/feat.R
 \name{feat_colspan_font_size}
 \alias{feat_colspan_font_size}
-\title{Generate Typst styling for spanned table cells}
+\title{Style spanned table cells}
 \usage{
 feat_colspan_font_size(num, size = "8pt")
 }
 \arguments{
-\item{num}{Integer. The colspan value to target (e.g., 6).}
+\item{num}{Integer. The colspan value to target.}
 
-\item{size}{String. The font size for these specific cells (e.g., "8pt").}
+\item{size}{String. The font size for these specific cells.}
 }
 \value{
-A list containing the preamble string.
+A feat object.
 }
 \description{
-Generate Typst styling for spanned table cells
+Style spanned table cells
 }

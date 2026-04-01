@@ -2,7 +2,7 @@
 % Please edit documentation in R/feat.R
 \name{feat_notes}
 \alias{feat_notes}
-\title{Generate Typst table notes}
+\title{Generate Typst table notes and environment}
 \usage{
 feat_notes(
   notes,
@@ -13,21 +13,19 @@ feat_notes(
 )
 }
 \arguments{
-\item{align}{String. Alignment of table on page.}
+\item{notes}{String. The text of the note to appear below the table.}
 
-\item{vert}{String. Vertical adjustment to "glue" the note to the table (e.g., "-1em").}
+\item{notes_size}{String. Font size of the note (e.g., "0.8em").}
 
-\item{notes.}{String giving text of notes.}
+\item{align}{String. Outer alignment of the table on the page.}
 
-\item{notes_size.}{Font size of notes.}
+\item{table_font_size}{String. Font size for the table body.}
 
-\item{text}{String. The text of the note to appear below the table.}
-
-\item{size}{String. Font size of the note (e.g., "0.8em").}
+\item{vert}{String. Vertical adjustment to "glue" the note to the table.}
 }
 \value{
-A list containing the epilogue string.
+A feat object.
 }
 \description{
-Generate Typst table notes
+Generate Typst table notes and environment
 }

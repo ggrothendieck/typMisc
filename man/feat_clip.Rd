@@ -7,9 +7,9 @@
 feat_clip()
 }
 \value{
-A list containing the preamble string.
+A feat object.
 }
 \description{
-Injects a show rule to clip table content and remove default strokes,
-useful for fixing border rendering issues ("butt fix").
+Injects a show rule to clip table content and remove default strokes.
+Useful for fixing border rendering issues ("butt fix").
 }

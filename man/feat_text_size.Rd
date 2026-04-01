@@ -2,7 +2,7 @@
 % Please edit documentation in R/feat.R
 \name{feat_text_size}
 \alias{feat_text_size}
-\title{Generate a Typst font environment}
+\title{Set table font size}
 \usage{
 feat_text_size(size = "8pt")
 }
@@ -10,8 +10,8 @@ feat_text_size(size = "8pt")
 \item{size}{String. The font size (e.g., "9pt").}
 }
 \value{
-A list with pre and epi strings.
+A feat object.
 }
 \description{
-Generate a Typst font environment
+Set table font size
 }

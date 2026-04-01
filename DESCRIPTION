@@ -1,8 +1,8 @@
 Package: typMisc
 Title: Miscellaneous R functions for typst.
-Version: 0.2.0
-URL: https://freierson.github.io/typstable/, https://github.com/freierson/typstable
-BugReports: ggrothendieck@gmail.com
+Version: 0.3.0
+BugReports: https://github.com/ggrothendieck/typMisc/issues
+URL: https://github.com/ggrothendieck/typMisc
 Authors@R:
     person("G.", "Grothendieck", email = "ggrothendieck@gmail.com", 
     role = c("aut", "cre"))
@@ -13,5 +13,5 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
 VignetteBuilder: knitr
 License: MIT 
-Date: 2026-03-30
+Date: 2026-04-01
 Suggests: knitr, rmarkdown

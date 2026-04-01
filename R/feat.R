@@ -1,115 +1,121 @@
-# Depends: R (>= 4.4.0)
-
-#' Generate Typst clipping rule for tables
-#' @description Injects a show rule to clip table content and remove default strokes, 
-#' useful for fixing border rendering issues ("butt fix").
-#' @return A list containing the preamble string.
+#' Create a feat object
+#' @param pre Preamble string.
+#' @param epi Epilogue string.
+#' @return An S3 object of class 'feat'.
 #' @export
-feat_clip <- function() {
-  list(pre = "#show table: it => { block(clip: true, stroke: none)[#it] }\n",
-       epi = "")
+feat <- function(pre = "", epi = "") {
+  structure(list(pre = pre, epi = epi), class = "feat")
 }
 
-#' Generate a Typst font environment
+#' Convert objects to feat class
+#' @param x Object to convert (character, list, or feat).
+#' @return A feat object.
+#' @export
+as.feat <- function(x) UseMethod("as.feat")
+
+#' @export
+as.feat.feat <- function(x) x
+
+#' @export
+as.feat.character <- function(x) feat(pre = x, epi = "")
+
+#' @export
+as.feat.list <- function(x) {
+  feat(pre = x$pre %||% x$preamble %||% "", 
+       epi = x$epi %||% x$epilogue %||% "")
+}
+
+#' Combine Typst features
+#' @param e1 A feat object or character string.
+#' @param e2 A feat object or character string.
+#' @description Combines features. Preambles are concatenated in order. 
+#' Epilogues are concatenated in reverse (LIFO) to ensure nested blocks close correctly.
+#' @export
+`+.feat` <- function(e1, e2) {
+  e1 <- as.feat(e1)
+  e2 <- as.feat(e2)
+  feat(pre = paste0(e1$pre, e2$pre), epi = paste0(e2$epi, e1$epi))
+}
+
+#' @export
+`+.character` <- function(e1, e2) {
+  if (inherits(e2, "feat")) return(as.feat(e1) + e2)
+  stop("Binary operator + only defined for feat objects or character strings.")
+}
+
+#' Print method for feat objects
+#' @param x A feat object.
+#' @param ... Unused.
+#' @export
+print.feat <- function(x, ...) {
+  cat("--- Typst Preamble ---\n", x$pre, "\n", sep = "")
+  cat("--- Typst Epilogue ---\n", x$epi, "\n", sep = "")
+}
+
+#' Generate Typst clipping rule for tables
+#' @description Injects a show rule to clip table content and remove default strokes.
+#' Useful for fixing border rendering issues ("butt fix").
+#' @return A feat object.
+#' @export
+feat_clip <- function() {
+  as.feat(list(pre = "#show table: it => { block(clip: true, stroke: none)[#it] }\n", epi = ""))
+}
+
+#' Set table font size
 #' @param size String. The font size (e.g., "9pt").
-#' @return A list with pre and epi strings.
+#' @return A feat object.
 #' @export
 feat_text_size <- function(size = "8pt") {
-  list(
-    pre = paste0("#set text(size: ", size, ")\n"),
-    epi = ""
-  )
+  as.feat(list(pre = paste0("#set text(size: ", size, ")\n"), epi = ""))
 }
 
 #' Align all cells in table
-#' @param align.  Can be "left", "center" or "right".
+#' @param align Character. One of "left", "center", or "right".
+#' @return A feat object.
 #' @export
 feat_align_cells <- function(align = c("left", "center", "right")) {
-  align = match.arg(align)
-  list(
-    pre = paste0("#set table(align:", align, ")\n"),
-    epi = ""
-  )
+  align <- match.arg(align)
+  as.feat(list(pre = paste0("#set table(align: ", align, ")\n"), epi = ""))
 }
 
-# Not used in my reports. Remove?
-#' Generate a Typst layout environment (Alignment & Blocks)
-#' @param align String. Outer alignment of the block (e.g., "center").
-#' @param inner_align String. Alignment inside the block (e.g., "left").
+#' Generate Typst table notes and environment
+#' @param notes String. The text of the note to appear below the table.
+#' @param notes_size String. Font size of the note (e.g., "0.8em").
+#' @param align String. Outer alignment of the table on the page.
+#' @param table_font_size String. Font size for the table body.
+#' @param vert String. Vertical adjustment to "glue" the note to the table.
+#' @return A feat object.
 #' @export
-feat_align <- function(align = "center", inner_align = "left") {
-  list(
-    pre = paste0("#align(", align, ")[#block[#set align(", inner_align, ")\n"),
-    epi = "]\n]\n"
-  )
+feat_notes <- function(notes, notes_size = "0.8em", align = "center", 
+                       table_font_size = "8pt", vert = "-1em") {
+  as.feat(list(
+    pre = paste0("#align(", align, ")[#block[#set align(left)\n#set text(size: ", table_font_size, ")\n"),
+    epi = paste0("#v(", vert, ") #text(size: ", notes_size, ")[", notes, "]\n]\n]\n")
+  ))
 }
 
-#' Generate Typst table notes
-#' @param notes.  String giving text of notes.
-#' @param notes_size.  Font size of notes.
-#' @param align String. Alignment of table on page.
-#' @param text String. The text of the note to appear below the table.
-#' @param size String. Font size of the note (e.g., "0.8em").
-#' @param vert String. Vertical adjustment to "glue" the note to the table (e.g., "-1em").
-#' @return A list containing the epilogue string.
-#' @export
-feat_notes <- function(notes, notes_size = "0.8em", 
-    align = "center", table_font_size = "8pt", vert = "-1em") {
-  list(
-     preamble = paste0("#align(", align, ")[#block[#set align(left)\n", 
-                       "#set text(size: ", table_font_size, ")\n"),
-     epilogue = paste0("#v(", vert, ") #text(size: ", notes_size, ")[", notes, "]\n]\n]\n")
-  )
-}
-
-#' Generate Typst styling for spanned table cells
-#' @param num Integer. The colspan value to target (e.g., 6).
-#' @param size String. The font size for these specific cells (e.g., "8pt").
-#' @return A list containing the preamble string.
+#' Style spanned table cells
+#' @param num Integer. The colspan value to target.
+#' @param size String. The font size for these specific cells.
+#' @return A feat object.
 #' @export
 feat_colspan_font_size <- function(num, size = "8pt") {
-  list(pre = paste0("#show table.cell.where(colspan: ", num, "): set text(size: ", size, ")\n"))
+  as.feat(list(pre = paste0("#show table.cell.where(colspan: ", num, "): set text(size: ", size, ")\n"), epi = ""))
 }
 
-#' Combine Typst features or raw strings into preamble and epilogue strings
-#' @param ... Multiple lists returned by feat_* functions or raw character strings.
-#' @description Stitches together multiple Typst rules. Character strings are 
-#' treated as preambles. Preambles are concatenated in order; epilogues are 
-#' reversed to ensure nested blocks close correctly (LIFO).
-#' @return A list with named elements 'preamble' and 'epilogue' for use in tt().
-#' @examples
-#' \dontrun{
-#' # Example usage in a Quarto document:
-#' env <- build_tt_env(
-#'   feat_env(font_size = "8pt", align = "center"),
-#'   "#set table(stroke: 0.5pt + blue)\n",
-#'   feat_clip(),
-#'   feat_notes("Source: xyz")
-#' )
-#' 
-#' df %>% tt(preamble = env$preamble, epilogue = env$epilogue)
-#' }
+#' Wrapper for typstable::tt with environment support
+#' @param x A data frame.
+#' @param ... Additional arguments passed to typstable::tt.
+#' @param env A feat object (or combined feat objects using +).
+#' @param preamble Optional character string (ignored if env is provided).
+#' @param epilogue Optional character string (ignored if env is provided).
 #' @export
-build_tt_env <- function(...) {
-  items <- list(...)
-  
-  # Normalize everything into a list(pre=..., epi=...)
-  normalized <- lapply(items, function(x) {
-    if (is.character(x)) {
-      list(pre = x, epi = "")
-    } else {
-      # Use base R 4.4.0+ %||% for safety
-      list(pre = x$pre %||% "", epi = x$epi %||% "")
-    }
-  })
-  
-  # Extract pre components in original order
-  pre_parts <- sapply(normalized, function(f) f$pre)
-  preamble <- paste(pre_parts, collapse = "")
-  
-  # Extract epi components and reverse them (LIFO)
-  epi_parts <- rev(sapply(normalized, function(f) f$epi))
-  epilogue <- paste(epi_parts, collapse = "")
-  
-  list(preamble = preamble, epilogue = epilogue)
+tt_env <- function(x, ..., env = NULL, preamble = NULL, epilogue = NULL) {
+  if (!is.null(env)) {
+    env <- as.feat(env)
+    preamble <- env$pre
+    epilogue <- env$epi
+  }
+  typstable::tt(x, ..., preamble = preamble, epilogue = epilogue)
 }
+
