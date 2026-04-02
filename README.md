@@ -33,12 +33,7 @@ object, which is a character string with class `"feat"` or a list with
 `preamble` or `epilogue` components.  The character string or list components
 should be typst language code. `as.feat` can be used to convert 
 a character string or such list to a `"feat"` object.  `"feat"` class has
-a + method which can be used to combine other feat objects. For example
-the following invokes typstable:tt adding footnotes, notes, and clipping
-any lines that protrude outside the table.
-``` r
-tt_env(escape = FALSE, env = feat_notes(notes = notes) + feat_clip())
-```
+a + method which can be used to combine other feat objects. 
 
 The package also defines a `"typstcode"` class which has a `knit_print` method
 so that printing such as object in a quarto document will emit typst code.
@@ -47,6 +42,73 @@ There is also an `encircle` function.  If `x` is a character vector then
 `encircle(x)` places typst code around it to enclode the string in a circle.
 This is to highlight certain cells in a table in a more obvious way than
 bold or italic.
+
+## Example qmd file
+
+To run this file from command line (not from R) run this assuming that
+`test.qmd` holds the file.
+
+```
+quarto render test.qmd --to typst
+```
+
+Everything from and including the --- to the end of this section would be 
+placed in `test.qmd`.
+
+````
+---
+title: typMisc qmd example
+format: typst
+---
+
+This illustrates the use of `tt_env` wrapper around `typstable::tt`.
+`tt_env` takes same arguments as `tt` plus `env=` where `env=` 
+is an alternative to using 
+`preamble=` and `epilogue=`.  The `feat_*` functions each return a `"feat"` 
+class object and those objects can be joined together via `+.feat` returning
+a combined `feat` object which can be input to `env=`.
+
+```{r}
+#| label: setup
+#| echo: false
+#| message: false
+#| warning: false
+
+library(dplyr)
+library(knitr)
+library(typMisc)
+library(typstable)
+```
+
+Here is an example table.
+
+```{r}
+#| label: tbl-example
+#| tbl-cap: "Example Table"
+#| echo: false
+#| results: "asis"
+
+notes <- paste("Note at bottom of table.",
+  "Backslash space means newline.",
+  "Thick vertical line protrudes from table so we clip the table.",
+  sep = "\\ ")
+
+mtcars %>%
+  head %>%
+  select(mpg, qsec, cyl, disp, hp) %>%
+  mutate(across(c(mpg, qsec), 
+    ~ if_else(. == min(.), encircle(.), as.character(.)))) %>%
+  tt_env(escape = FALSE, env = 
+    feat_notes(notes = notes) +
+    feat_clip() +
+    feat_text_size(size = "8pt")
+  ) %>%
+  tt_column(2, stroke = "(right: 2pt)")
+
+```
+
+````
+
 
 ## Typst
 

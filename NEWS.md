@@ -1,3 +1,7 @@
+# typMisc 0.3.1
+
+* add a full example to the README and vignette
+
 # typMisc 0.3.0
 
 * added tt_env
