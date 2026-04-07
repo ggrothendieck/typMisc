@@ -13,5 +13,5 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
 VignetteBuilder: knitr
 License: MIT 
-Date: 2026-04-02
+Date: 2026-04-07
 Suggests: knitr, rmarkdown

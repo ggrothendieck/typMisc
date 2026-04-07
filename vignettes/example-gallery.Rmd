@@ -1,0 +1,14 @@
+---
+title: "Example Files"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Example Files}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+Full examples of .qmd and .Rtyp files are available 
+[here](https://github.com/ggrothendieck/typMisc/tree/main/inst/examples) 
+or via `examples_browser()` in R.
+
+

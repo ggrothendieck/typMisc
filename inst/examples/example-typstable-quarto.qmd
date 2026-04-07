@@ -1,4 +1,6 @@
 ---
+# To run: quarto render example-typstable-quarto.qmd --to typst
+
 format: 
   typst:
     keep-typ: true
@@ -12,11 +14,9 @@ execute:
 #| warning: false
 
 library(dplyr)
-library(huxtable)
+library(typstable)
 library(knitr)
-library(typMisc)
-
-options(huxtable.print = print_typst)
+library(typstable)
 
 ```
 
@@ -28,14 +28,13 @@ options(huxtable.print = print_typst)
 
 
 BOD %>%
-  as_hux() %>%  
-  set_all_borders(1) %>%
+  tt() %>%  
   table_note("This is a \\ note")
 
-breakable(TRUE)
+# breakable(TRUE)
 iris %>%
-  as_hux() %>%
-  set_all_borders(1)
+  tt()
+
 
 ```
 

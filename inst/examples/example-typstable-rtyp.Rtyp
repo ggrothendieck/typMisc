@@ -1,0 +1,40 @@
+// to run (from R):
+//   remotes::install_github('yihui/knitr')  # dev version of knitr
+//   knitr::knit("example-typstable-rtyp.Rtyp", "example-typstable-rtyp.typ")
+// and then from the command line:
+//   typst compile example-typstable-rtyp.typ
+
+#set page(paper: "us-letter", margin: 1in)
+#set text(font: "Libertinus Serif", size: 10pt)
+
+= Minimal Reproducible Example: R to Typst
+
+This document illustrates the current requirement for `asis_output()` when using `typstable` with `knitr` to target Typst directly.
+
+== Plot Output
+
+```{r plot, echo=FALSE, fig.cap = "Built-in mtcars Plot", out.width="80%"}
+library(ggplot2)
+ggplot(mtcars[1:5, ], aes(x = factor(hp), y = mpg)) + 
+  geom_col(fill = "steelblue") + 
+  theme_minimal()
+```
+
+#v(2em)
+== Table Output
+
+```{r table, echo=FALSE}
+library(knitr)
+library(typstable)
+
+# Minimal call using built-in data
+# Current workaround: requires manual tt_render and asis_output
+mtcars[1:5, 1:4] %>%
+  tt() %>%
+  tt_render() %>%
+  asis_output()
+```
+
+#v(1em)
+_Generated: #datetime.today().display()_
+
